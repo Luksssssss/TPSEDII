@@ -46,7 +46,7 @@
     DELAY3_Init
     DELAY1
     DELAY2
-    DELAy3
+    DELAY3
     COUNTER_LED
     COUNTER_SECUENCES
     ENDC
@@ -63,16 +63,34 @@ CFG_SWITCH MACRO
     ENDM
 CFG_LEDS MACRO
     BSF STATUS,RP0
-    BCF STATUS, RP1
+    BCF STATUS,RP1
     CLRF TRISD
+    CLRF PORTD
     ENDM
 CFG_BUZZER MACRO
+    BSF STATUS,RP0
+    BCF STATUS,RP1
+    BCF TRISC,TRISC0
     ENDM
 CFG_SECUENCES MACRO
     ENDM
 BUZZER_OFF MACRO
+    MOVLW .0
+    MOVWF RC0
     ENDM
 CFG_DELAY_1s MACRO ; Para delay de 1seg
+    MOVLW   D'255'
+    MOVWF DELAY1_Init
+    MOVLW D'245'
+    MOVWF DELAY2_Init
+    MOVLW D'4'
+    MOVWF DELAY3_Init
+    ENDM
+CFG_DELAY_100ms MACRO
+    ENDM
+CFG_DELAY_200ms MACRO
+    ENDM
+CFG_DELAY_300ms MACRO
     ENDM
 LEDS_ON MACRO ; Macro para encender todos los LEDs de una
     MOVLW .1
@@ -93,16 +111,24 @@ LEDS_OFF MACRO ; Macro para apagar todos los LEDs de una
 ; INICIALIZACIÓN DE MACROS PARA CONFIGURACIÓN DE REGISTROS
 ;===============================================================================    	    
 INICIO	    ;-----Inicialización de Macros-------
-
+	CFG_SWITCH
+	CFG_LEDS
+	CFG_BUZZER
+	BUZZER_OFF
 		
 ;===============================================================================
 ; INICIO PROGRAMA PRINCIPAL
 ;===============================================================================						
-   CALL TEST_LEDS
+   
+    CALL TEST_LEDS
 
 MAIN_LOOP
-    GOTO    MAIN_LOOP	
-	
+    CFG_DELAY_100ms
+	BTFSC SWITCH ; si no se presiona esta en 1
+	CALL DELAY_3LOOP
+	BTFSC SWITCH
+	GOTO    MAIN_LOOP	
+	CALL SECUENCES
 ;===============================================================================
 ; SUBRUTINAS
 ;===============================================================================	 
@@ -118,8 +144,23 @@ TEST_LEDS
     LEDS_OFF
     CALL DELAY_3LOOP
     RETURN
-
+SECUENCES
+    
+    RETURN
 DELAY_3LOOP
+	    MOVFW DELAY1_Init
+	    MOVWF DELAY1
+LOOP1	MOVFW DELAY2_Init
+	MOVWF DELAY2
+LOOP2	MOVFW DELAY3_Init
+	MOVWF DELAY3
+LOOP3	DECFSZ DELAY3,F
+	GOTO LOOP3
+	DECFSZ DELAY2,F
+	GOTO LOOP2
+	DECFSZ DELAY1,F
+	GOTO LOOP1
+	RETURN
     RETURN
 ;===============================================================================		
     END
