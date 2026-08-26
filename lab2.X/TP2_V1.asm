@@ -60,17 +60,21 @@ CFG_SWITCH MACRO
 
     BCF STATUS,RP1	  ; Banco 1 -> RP1=0 ; RP0=1
     BSF TRISE,TRISE0 ; Configuramos RE0 como pin de entrada 
+    BCF STATUS,RP0
+    BCF STATUS,RP1
     ENDM
 CFG_LEDS MACRO
     BSF STATUS,RP0
     BCF STATUS,RP1
-    CLRF TRISD
     CLRF PORTD
+    CLRF TRISD
+    BCF STATUS,RP0
     ENDM
 CFG_BUZZER MACRO
     BSF STATUS,RP0
     BCF STATUS,RP1
     BCF TRISC,TRISC0
+    BCF STATUS,RP0
     ENDM
 CFG_SECUENCES MACRO
     ENDM
@@ -87,13 +91,31 @@ CFG_DELAY_1s MACRO ; Para delay de 1seg
     MOVWF DELAY3_Init
     ENDM
 CFG_DELAY_100ms MACRO
+    MOVLW   D'26'
+    MOVWF DELAY1_Init
+    MOVLW D'241'
+    MOVWF DELAY2_Init
+    MOVLW D'4'
+    MOVWF DELAY3_Init
     ENDM
 CFG_DELAY_200ms MACRO
+    MOVLW D'60'
+    MOVWF DELAY1_Init
+    MOVLW D'209'
+    MOVWF DELAY2_Init
+    MOVLW D'4'
+    MOVWF DELAY3_Init
     ENDM
 CFG_DELAY_300ms MACRO
+    MOVLW D'90'
+    MOVWF DELAY1_Init
+    MOVLW D'208'
+    MOVWF DELAY2_Init
+    MOVLW D'4'
+    MOVWF DELAY3_Init
     ENDM
 LEDS_ON MACRO ; Macro para encender todos los LEDs de una
-    MOVLW .1
+    MOVLW .255
     MOVWF PORTD
     ENDM
 LEDS_OFF MACRO ; Macro para apagar todos los LEDs de una
@@ -114,21 +136,23 @@ INICIO	    ;-----Inicialización de Macros-------
 	CFG_SWITCH
 	CFG_LEDS
 	CFG_BUZZER
+	CFG_SECUENCES
 	BUZZER_OFF
 		
 ;===============================================================================
 ; INICIO PROGRAMA PRINCIPAL
 ;===============================================================================						
-   
-    CALL TEST_LEDS
-
-MAIN_LOOP
+    
+MAIN_LOOP 
     CFG_DELAY_100ms
+        CALL TEST_LEDS
 	BTFSC SWITCH ; si no se presiona esta en 1
+	GOTO MAIN_LOOP
 	CALL DELAY_3LOOP
 	BTFSC SWITCH
-	GOTO    MAIN_LOOP	
+	GOTO  MAIN_LOOP	
 	CALL SECUENCES
+	GOTO MAIN_LOOP
 ;===============================================================================
 ; SUBRUTINAS
 ;===============================================================================	 
@@ -144,9 +168,15 @@ TEST_LEDS
     LEDS_OFF
     CALL DELAY_3LOOP
     RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************    
 SECUENCES
     
     RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************
 DELAY_3LOOP
 	    MOVFW DELAY1_Init
 	    MOVWF DELAY1
@@ -161,7 +191,6 @@ LOOP3	DECFSZ DELAY3,F
 	DECFSZ DELAY1,F
 	GOTO LOOP1
 	RETURN
-    RETURN
 ;===============================================================================		
     END
 ;===============================================================================
