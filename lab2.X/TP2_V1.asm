@@ -77,10 +77,11 @@ CFG_BUZZER MACRO
     BCF STATUS,RP0
     ENDM
 CFG_SECUENCES MACRO
-    ENDM
-BUZZER_OFF MACRO
-    MOVLW .0
-    MOVWF RC0
+    BCF STATUS,RP0
+    BCF STATUS,RP1
+    CLRF COUNTER_LED
+    MOVLW .3
+    MOVWF COUNTER_SECUENCES
     ENDM
 CFG_DELAY_1s MACRO ; Para delay de 1seg
     MOVLW   D'255'
@@ -121,6 +122,25 @@ LEDS_ON MACRO ; Macro para encender todos los LEDs de una
 LEDS_OFF MACRO ; Macro para apagar todos los LEDs de una
     CLRF PORTD
     ENDM
+BUZZER_ON MACRO ; Macro para encender el buzzer
+    BCF BUZZER
+    ENDM
+BUZZER_OFF MACRO ; Macro para apaga el buzzer
+    BSF BUZZER
+    ENDM
+LEDS_RLF MACRO
+    BTFSC   LED0 ; skip si esta en 0
+    BCF     STATUS, C
+    RLF     COUNTER_LED, F  
+    BCF     STATUS, C
+    MOVF    COUNTER_LED, W   
+    MOVWF   PORTD           
+    ENDM
+LEDS_RRF MACRO
+    RRF     COUNTER_LED, F
+    MOVF    COUNTER_LED, W   
+    MOVWF   PORTD
+    ENDM
 ;===============================================================================
 ; INICIALIZACIÓN DEL MCU (CÓDIGO ABSOLUTO)
 ;===============================================================================    
@@ -144,10 +164,10 @@ INICIO	    ;-----Inicialización de Macros-------
 ;===============================================================================						
     
 MAIN_LOOP 
-    CFG_DELAY_100ms
         CALL TEST_LEDS
 	BTFSC SWITCH ; si no se presiona esta en 1
 	GOTO MAIN_LOOP
+	CFG_DELAY_100ms
 	CALL DELAY_3LOOP
 	BTFSC SWITCH
 	GOTO  MAIN_LOOP	
@@ -172,7 +192,103 @@ TEST_LEDS
 ; @details  Descripción específica de la subrutina.
 ;*******************************************************************************    
 SECUENCES
+    CALL BUZZER_BIP
+    CALL RUNNING_LIGHT
+    CALL BIDIR_RUNNING_LIGHT
+    CALL CRAWLING
+    RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************
+BUZZER_BIP
+    CFG_DELAY_200ms
+    BUZZER_ON
+    CALL DELAY_3LOOP
+    BUZZER_OFF
+    RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************
+RUNNING_LIGHT
+    CFG_DELAY_300ms
+    LEDS_OFF
+LOOP_RL
+    CALL FORWARD_LED
+    DECF COUNTER_SECUENCES, F
+    BTFSS  STATUS,Z ; Bit Test File, Skip if Set
+    GOTO LOOP_RL
+    CFG_SECUENCES
+    RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************
+BIDIR_RUNNING_LIGHT
+    CFG_DELAY_200ms
+    LEDS_OFF
+LOOP_BRL
+    CALL FORWARD_LED
+    CALL BACKWARD_LED
+    DECF COUNTER_SECUENCES, F
+    BTFSS  STATUS,Z ; Bit Test File, Skip if Set
+    GOTO LOOP_BRL
+    CFG_SECUENCES
+    RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************
+CRAWLING
+    CFG_DELAY_200ms
+    LEDS_OFF
+LOOP_CW
+    CALL PROGRESSIVE_LED_ON
+    CALL PROGRESSIVE_LED_OFF
+    DECF COUNTER_SECUENCES, F
+    BTFSS  STATUS,Z ; Bit Test File, Skip if Set
+    GOTO LOOP_CW
+    CFG_SECUENCES
+    RETURN
+;*******************************************************************************
+; @details  Descripción específica de la subrutina.
+;*******************************************************************************
+FORWARD_LED
+    BSF STATUS,C
+FW_LOOP
+    LEDS_RLF
+    CALL DELAY_3LOOP
+    BTFSS LED7 ; Bit Test File, Skip if Set
+    GOTO FW_LOOP
+    RETURN
+
+BACKWARD_LED
+    BCF STATUS,C
+BW_LOOP
+    LEDS_RRF
+    CALL DELAY_3LOOP
+    BTFSS LED0 ; Bit Test File, Skip if Set
+    GOTO BW_LOOP
+    RETURN
     
+PROGRESSIVE_LED_ON
+    CLRF COUNTER_LED
+PROG_LN
+    BSF STATUS,C
+    RLF COUNTER_LED, F
+    MOVFW COUNTER_LED
+    MOVWF PORTD
+    CALL    DELAY_3LOOP
+    BTFSS LED7 ; Bit Test File, Skip if Set
+    GOTO PROG_LN
+    RETURN
+    
+PROGRESSIVE_LED_OFF
+PROG_LO
+    BCF STATUS,C
+    RRF COUNTER_LED
+    MOVFW COUNTER_LED
+    MOVWF PORTD
+    CALL    DELAY_3LOOP
+    BTFSC LED0 ; Bit Test File, Skip if Zero
+    GOTO PROG_LO
     RETURN
 ;*******************************************************************************
 ; @details  Descripción específica de la subrutina.
