@@ -132,7 +132,6 @@ LEDS_RLF MACRO
     BTFSC   LED0 ; skip si esta en 0
     BCF     STATUS, C
     RLF     COUNTER_LED, F  
-    BCF     STATUS, C
     MOVF    COUNTER_LED, W   
     MOVWF   PORTD           
     ENDM
