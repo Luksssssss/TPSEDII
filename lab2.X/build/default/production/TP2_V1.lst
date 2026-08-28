@@ -1,4 +1,4 @@
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  1
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00041 ; DEFINICIÓN DE VARIABLES
                       00042 ;=============================================================================== 
                       00043     CBLOCK 0x20
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  2
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00094 CFG_DELAY_100ms MACRO
                       00095     MOVLW   D'26'
                       00096     MOVWF DELAY1_Init
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  3
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0000   2???           00147     GOTO    INICIO      ;Salto al inicio del programa principal
                       00148     ORG     0x05        ;Ubicación Programa Principal en la memoria 
                       00149                         ;de programa
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  4
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0020   30F1               M     MOVLW D'241'
 0021   00A1               M     MOVWF DELAY2_Init
 0022   3004               M     MOVLW D'4'
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  5
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -293,7 +293,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00204     BUZZER_ON
 0040   1007               M     BCF BUZZER
 0041   2???           00205     CALL DELAY_3LOOP
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  6
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -352,7 +352,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0063   01A6               M     CLRF COUNTER_LED
 0064   3003               M     MOVLW .3
 0065   00A7               M     MOVWF COUNTER_SECUENCES
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  7
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  7
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -363,10 +363,10 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00236 ; @details  Descripción específica de la subrutina.
                       00237 ;*******************************************************************************
 0067                  00238 CRAWLING
-                      00239     CFG_DELAY_200ms
-0067   303C               M     MOVLW D'60'
+                      00239     CFG_DELAY_100ms
+0067   301A               M     MOVLW   D'26'
 0068   00A0               M     MOVWF DELAY1_Init
-0069   30D1               M     MOVLW D'209'
+0069   30F1               M     MOVLW D'241'
 006A   00A1               M     MOVWF DELAY2_Init
 006B   3004               M     MOVLW D'4'
 006C   00A2               M     MOVWF DELAY3_Init
@@ -411,7 +411,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0086   0088               M     MOVWF   PORTD
 0087   2???           00265     CALL DELAY_3LOOP
 0088   1C08           00266     BTFSS LED0 ; Bit Test File, Skip if Set
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  8
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -462,7 +462,7 @@ Message[305]: Using default destination of 1 (file).
 00A8   0008           00308         RETURN
                       00309 ;===============================================================================                
 2FF1                  00310     END
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE  9
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE  9
 
 
 SYMBOL TABLE
@@ -521,7 +521,7 @@ BRG4                              00000004
 BRG5                              00000005
 BRG6                              00000006
 BRG7                              00000007
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 10
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 10
 
 
 SYMBOL TABLE
@@ -580,7 +580,7 @@ CCP2Y                             00000004
 CCPR1                             00000015
 CCPR1H                            00000016
 CCPR1L                            00000015
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 11
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 11
 
 
 SYMBOL TABLE
@@ -639,7 +639,7 @@ EECON2                            0000018D
 EEDAT                             0000010C
 EEDATA                            0000010C
 EEDATH                            0000010E
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 12
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 12
 
 
 SYMBOL TABLE
@@ -698,7 +698,7 @@ LEDS_RRF
 LOOP1                             0000009E
 LOOP2                             000000A0
 LOOP3                             000000A2
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 13
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 13
 
 
 SYMBOL TABLE
@@ -757,7 +757,7 @@ PDC6                              00000006
 PEIE                              00000006
 PEN                               00000002
 PIE1                              0000008C
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 14
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 14
 
 
 SYMBOL TABLE
@@ -816,7 +816,7 @@ RC4                               00000004
 RC5                               00000005
 RC6                               00000006
 RC7                               00000007
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 15
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 15
 
 
 SYMBOL TABLE
@@ -875,7 +875,7 @@ SSPCON2                           00000091
 SSPEN                             00000005
 SSPIE                             00000003
 SSPIF                             00000003
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 16
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 16
 
 
 SYMBOL TABLE
@@ -934,7 +934,7 @@ TOUTPS1                           00000004
 TOUTPS2                           00000005
 TOUTPS3                           00000006
 TRISA                             00000085
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 17
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 17
 
 
 SYMBOL TABLE
@@ -993,7 +993,7 @@ TXD8                              00000000
 TXEN                              00000005
 TXIE                              00000004
 TXIF                              00000004
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 18
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 18
 
 
 SYMBOL TABLE
@@ -1052,7 +1052,7 @@ _BOR_SBODEN                       00003DFF
 _CONFIG1                          00002007
 _CONFIG2                          00002008
 _CPD_OFF                          00003FFF
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 19
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 19
 
 
 SYMBOL TABLE
@@ -1108,7 +1108,7 @@ _WRT_OFF                          00003FFF
 _XT_OSC                           00003FF9
 __16F887                          00000001
 
-MPASM 5.87                        TP2_V1.ASM   8-26-2026  21:55:19         PAGE 20
+MPASM 5.87                        TP2_V1.ASM   8-28-2026  10:01:39         PAGE 20
 
 
 

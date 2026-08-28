@@ -236,7 +236,7 @@ LOOP_BRL
 ; @details  Descripción específica de la subrutina.
 ;*******************************************************************************
 CRAWLING
-    CFG_DELAY_200ms
+    CFG_DELAY_100ms
     LEDS_OFF
 LOOP_CW
     CALL PROGRESSIVE_LED_ON
